@@ -20,6 +20,7 @@ public class Server {
       while ((st = br.readLine()) != null) {
         words.add(st);
       }
+      br.close();
     } catch (FileNotFoundException fe) {
 
     } catch (IOException ioe) {

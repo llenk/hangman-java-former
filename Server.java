@@ -5,6 +5,12 @@ import java.util.Date;
 import java.io.PrintWriter;
 /** * Java program to create a simple HTTP Server to demonstrate how to use * ServerSocket and Socket class. * * @author Javin Paul */ 
 public class Server { 
+
+  public static Array getWords() {
+    
+    return new Array[0];
+  }
+
   public static void main(String args[]) throws IOException { 
     ServerSocket server = new ServerSocket(8080); 
     System.out.println("Listening for connection on port 8080 ...."); 

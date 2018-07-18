@@ -4,10 +4,6 @@ import java.net.Socket;
 import java.util.Date;
 import java.util.*;
 
-/**
- * * Java program to create a simple HTTP Server to demonstrate how to use *
- * ServerSocket and Socket class. * * @author Javin Paul
- */
 public class Server {
 
   public static ArrayList getWords() {
@@ -29,15 +25,28 @@ public class Server {
     return words;
   }
 
+  public static String pickWord(ArrayList<String> words) {
+    return words.get(0);
+  }
+
+  public static char[] wordToArray(String word) {
+    char[] arrayWord = new char[word.length()];
+    for (int i = 0; i < word.length(); i++) {
+      arrayWord[i] = word.charAt(i);
+    } 
+    return arrayWord;
+  }
+
   public static void main(String args[]) throws IOException {
     ServerSocket server = new ServerSocket(8080);
     ArrayList<String> words = getWords();
-    System.out.println(words.get(5));
+    String word = pickWord(words);
+    char[] arrayWord = wordToArray(word);
     System.out.println("Listening for connection on port 8080 ....");
     while (true) {
       try (Socket socket = server.accept()) {
         Date today = new Date();
-        String httpResponse = "HTTP/1.1 200 OK\r\nContent-Length: 28\r\n\r\n" + today;
+        String httpResponse = "HTTP/1.1 200 OK\r\nContent-Length: " + word.length() + "\r\n\r\n" + word;
         socket.getOutputStream().write(httpResponse.getBytes("UTF-8"));
       }
     }

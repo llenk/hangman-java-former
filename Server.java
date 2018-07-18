@@ -29,24 +29,30 @@ public class Server {
     return words.get(0);
   }
 
-  public static char[] wordToArray(String word) {
-    char[] arrayWord = new char[word.length()];
-    for (int i = 0; i < word.length(); i++) {
-      arrayWord[i] = word.charAt(i);
-    } 
-    return arrayWord;
+  public static String arrayToWord(char[] arrayWord) {
+    String word = "";
+    for (int i = 0; i < arrayWord.length; i++) {
+      if (arrayWord[i] == 0) {
+        word += "_";
+      }
+      else {
+        word += arrayWord[i];
+      }
+    }
+    return word;
   }
 
   public static void main(String args[]) throws IOException {
     ServerSocket server = new ServerSocket(8080);
     ArrayList<String> words = getWords();
     String word = pickWord(words);
-    char[] arrayWord = wordToArray(word);
+    char[] arrayWordCurrent = new char[word.length()];
+    char[] arrayWordFull = word.toCharArray();
     System.out.println("Listening for connection on port 8080 ....");
     while (true) {
       try (Socket socket = server.accept()) {
         Date today = new Date();
-        String httpResponse = "HTTP/1.1 200 OK\r\nContent-Length: " + word.length() + "\r\n\r\n" + word;
+        String httpResponse = "HTTP/1.1 200 OK\r\nContent-Length: " + word.length() + "\r\n\r\n" + arrayToWord(arrayWordCurrent);
         socket.getOutputStream().write(httpResponse.getBytes("UTF-8"));
       }
     }

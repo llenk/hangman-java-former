@@ -1,7 +1,9 @@
 import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.util.Date;
+import java.net.InetSocketAddress;
+import java.net.URI;
+import java.net.URLDecoder;
 import java.util.*;
 import java.net.URI;
 import java.net.URLDecoder;
@@ -9,6 +11,7 @@ import java.net.URLDecoder;
 import com.sun.net.httpserver.Headers;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
+import com.sun.net.httpserver.HttpServer;
 
 public class Server {
 
@@ -71,16 +74,13 @@ public class Server {
 	}
 
   public static void main(String args[]) throws IOException {
-    ServerSocket server = new ServerSocket(8080);
-    ArrayList<String> words = getWords();
-    Word word = new Word(pickWord(words));
-    System.out.println("Listening for connection on port 8080 ....");
-    while (true) {
-      try (Socket socket = server.accept()) {
-        Date today = new Date();
-        String httpResponse = "HTTP/1.1 200 OK\r\nContent-Length: " + word.getWord().length() + "\r\n\r\n" + word.getWord();
-        socket.getOutputStream().write(httpResponse.getBytes("UTF-8"));
-      }
+    try {
+      HttpServer server = HttpServer.create(new InetSocketAddress(8080), 0);
+      server.setExecutor(null);
+			server.start();
     }
+    catch (IOException e) {
+			e.printStackTrace();
+		}
   }
 }
